@@ -11,7 +11,6 @@ from config import CLASSES_WEIGHTS, CLASSES_WEIGHTS_SUM, IMAGE_SIZE, MASKS_DIR, 
 
 def add_sample_weights(image, label):
     # The weights for each class, with the constraint that:
-    #     sum(class_weights) == 1.0
     class_weights = tf.constant(CLASSES_WEIGHTS)
 
     class_weights = class_weights/tf.reduce_sum(class_weights)
@@ -114,12 +113,8 @@ def load_images_and_masks():
         if filename.endswith('.png'):
             mask_path = os.path.join(MASKS_DIR, filename)
             mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
-            # mask = mask.astype(np.uint8) / 255.0
             masks.append(mask)
-            # print(filename)
 
-    # print(len(masks))
-    # print(len(images))
     images = np.array(images)
     masks = np.array(masks)
     masks = np.expand_dims(masks, axis=-1)

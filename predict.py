@@ -6,13 +6,11 @@ import keras
 
 def detect():
     # Load and preprocess the image
-    #image_path = '00000002.jpg'
     image_path = "./dataset/images/IMG_4495.JPG"
     mask_path = "./dataset/combined_masks/IMG_4495_combined.png"
 
     image = cv2.imread(image_path)
     image = cv2.resize(image, (1024, 1024))  # Resize to match model input shape
-    # image = image / 255.0  # Normalize pixel values to the range of [0, 1]
     image = np.expand_dims(image, axis=0)  # Add batch dimension
 
     # Load the trained model
@@ -20,7 +18,6 @@ def detect():
 
     # Generate predictions
     predictions = model.predict(image)
-    # predictions = (predictions > 0.5).astype(np.uint8)  # Threshold the predictions
     predictions = np.argmax(predictions, axis=-1).astype(np.uint8)  # Threshold the predictions
 
     mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)

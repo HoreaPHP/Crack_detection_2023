@@ -9,16 +9,12 @@ def plot_line(epochs, what, name, file):
     plt.ylabel('Values')
     # plt.ylim([0, 1])
     plt.legend()
-    # plt.savefig(PATH_FIGURES + f"epoch{len(epochs)}_{file}")
+    plt.savefig(f"epoch{len(epochs)}_{file}")
     plt.close()
-    # plt.show()
+    plt.show()
 
 
 def plot_loss_n_acc(epochs, loss, acc, val_loss, val_acc):
-    # isExist = os.path.exists(PATH_FIGURES)
-    # if not isExist:
-    #     os.makedirs(PATH_FIGURES)
-
     plot_line(epochs, loss, "Training Loss", "loss")
     plot_line(epochs, val_loss, "Validation Loss", "val_loss")
     plot_line(epochs, acc, "Training Accuracy", "acc")
