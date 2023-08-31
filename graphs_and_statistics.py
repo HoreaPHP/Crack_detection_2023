@@ -34,30 +34,30 @@ def acc_matrix(masks, predictions):
     plt.savefig("graphs/accuracy_matrix.png")
     plt.show()
 
-    # FP = len(np.where(predictions - masks == 1)[0])
-    # FN = len(np.where(predictions - masks == -1)[0])
-    # TP = len(np.where(predictions + masks == 2)[0])
-    # TN = len(np.where(predictions + masks == 0)[0])
-    # cmat = [[TP, FN], [FP, TN]]
-    #
-    # plt.figure(figsize = (6,6))
-    # sns.heatmap(cmat/np.sum(cmat), cmap="Reds", annot=True, fmt = '.2%', square=1,   linewidth=2.)
-    # plt.xlabel("predictions")
-    # plt.ylabel("real values")
-    # plt.show()
-    # cm = confusion_matrix(masks, predictions)
-    #
-    # total = np.sum(cm)
-    # cm_percentage = (cm / total) * 100
-    # cm_percentage_str = np.array([["{:.2f}%".format(val) for val in row] for row in cm_percentage])
-    #
-    # # Using the 's' format specifier since the annotations are now strings
-    # plt.figure(figsize=(10, 8))
-    # sns.heatmap(cm_percentage, annot=cm_percentage_str, fmt='s', cmap='Blues')
-    # plt.xlabel('Predicted')
-    # plt.ylabel('True')
-    # plt.savefig("graphs/confusion_matrix.png", dpi=300, bbox_inches='tight')
-    # plt.show()
+    FP = len(np.where(predictions - masks == 1)[0])
+    FN = len(np.where(predictions - masks == -1)[0])
+    TP = len(np.where(predictions + masks == 2)[0])
+    TN = len(np.where(predictions + masks == 0)[0])
+    cmat = [[TP, FN], [FP, TN]]
+
+    plt.figure(figsize = (6,6))
+    sns.heatmap(cmat/np.sum(cmat), cmap="Reds", annot=True, fmt = '.2%', square=1,   linewidth=2.)
+    plt.xlabel("predictions")
+    plt.ylabel("real values")
+    plt.show()
+    cm = confusion_matrix(masks, predictions)
+
+    total = np.sum(cm)
+    cm_percentage = (cm / total) * 100
+    cm_percentage_str = np.array([["{:.2f}%".format(val) for val in row] for row in cm_percentage])
+
+    # Using the 's' format specifier since the annotations are now strings
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(cm_percentage, annot=cm_percentage_str, fmt='s', cmap='Blues')
+    plt.xlabel('Predicted')
+    plt.ylabel('True')
+    plt.savefig("graphs/confusion_matrix.png", dpi=300, bbox_inches='tight')
+    plt.show()
 
 
 def f1_precision_recall(masks, predictions):
@@ -99,17 +99,6 @@ def plot_3_images(images, masks, predictions):
     plt.imshow(predictions[1], cmap="gray")
     plt.axis('off')
 
-    # plt.subplot(3, 3, 7)
-    # plt.imshow(images[2])
-    # plt.axis('off')
-    #
-    # plt.subplot(3, 3, 8)
-    # plt.imshow(masks[2], cmap="gray")
-    # plt.axis('off')
-    #
-    # plt.subplot(3, 3, 9)
-    # plt.imshow(predictions[2], cmap="gray")
-    # plt.axis('off')
 
     plt.subplots_adjust(wspace=0.2)
     plt.savefig('combined.png')
@@ -117,8 +106,8 @@ def plot_3_images(images, masks, predictions):
 
 model = keras.models.load_model('models/mobile_large_1024_only_cracks.h5')
 
-test_images = os.listdir(IMAGES_DIR)[:4]
-test_masks = os.listdir(MASKS_DIR)[:4]
+test_images = os.listdir(IMAGES_DIR)
+test_masks = os.listdir(MASKS_DIR)
 
 # print(test_images)
 # print(test_masks)
@@ -146,10 +135,10 @@ flattened_masks = [mask.flatten() for mask in masks]
 concatenated_predictions = np.concatenate(flattened_predictions)
 concatenated_masks = np.concatenate(flattened_masks)
 
-#acc_matrix(concatenated_masks, concatenated_predictions)
-# f1_precision_recall(concatenated_masks, concatenated_predictions)
-# compute_accuracy(concatenated_masks, concatenated_predictions)
-# logistic_loss(concatenated_masks, concatenated_predictions)
+acc_matrix(concatenated_masks, concatenated_predictions)
+f1_precision_recall(concatenated_masks, concatenated_predictions)
+compute_accuracy(concatenated_masks, concatenated_predictions)
+logistic_loss(concatenated_masks, concatenated_predictions)
 
 plot_3_images(images, masks, predictions)
 
